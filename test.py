@@ -8,8 +8,22 @@ class TestTraversalMethod(unittest.TestCase):
         self.assertEqual(util.traverse({}), {})
     
     def test_simple(self):
-        data = {"name": "E.M. Forster"}
-        expected = {"name": str}
+        data = {
+            "author": "E.M. Forster",
+            "age": 48,
+        }
+        expected = {"author": str, "age": int}
+        self.assertEqual(util.traverse(data), expected)
+
+    def test_nested(self):
+        data = {
+            "author": "E.M. Forster",
+            "age": 48,
+        }
+        expected = {
+            "author": str,
+            "age": int,
+        }
         self.assertEqual(util.traverse(data), expected)
 
 
