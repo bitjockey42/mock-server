@@ -6,6 +6,9 @@ def traverse(data: Dict):
     traversed = {}
 
     for k, v in data.items():
-        traversed[k] = type(v)
+        if isinstance(v, dict):
+            traversed[k] = traverse(v)
+        else:
+            traversed[k] = type(v)
 
     return traversed

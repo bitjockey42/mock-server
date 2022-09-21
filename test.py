@@ -19,10 +19,22 @@ class TestTraversalMethod(unittest.TestCase):
         data = {
             "author": "E.M. Forster",
             "age": 48,
+            "metadata": {
+                "code": "abc1234",
+                "data": {
+                    "number": "twelve"
+                }
+            }
         }
         expected = {
             "author": str,
             "age": int,
+            "metadata": {
+                "code": str,
+                "data": {
+                    "number": str
+                }
+            }
         }
         self.assertEqual(util.traverse(data), expected)
 
