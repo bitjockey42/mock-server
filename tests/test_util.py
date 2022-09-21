@@ -2,7 +2,7 @@ import unittest
 
 from datetime import datetime
 
-import util
+from mock_server import util
 
 
 class FakeDataType:
@@ -68,7 +68,3 @@ class TestTraversalMethod(unittest.TestCase):
             "fakedata": FakeDataType
         }
         self.assertEqual(util.traverse(data), expected)
-
-
-if __name__ == "__main__":
-    unittest.main()
