@@ -1,6 +1,13 @@
 import unittest
 
+from datetime import datetime
+
 import util
+
+
+class FakeDataType:
+    def __init__(self) -> None:
+        pass
 
 
 class TestTraversalMethod(unittest.TestCase):
@@ -35,6 +42,30 @@ class TestTraversalMethod(unittest.TestCase):
                     "number": str
                 }
             }
+        }
+        self.assertEqual(util.traverse(data), expected)
+
+    def test_datetime(self):
+        data = {
+            "name": "Maurice Hall",
+            "dob": datetime(1898, 10, 1)
+        }
+        expected = {
+            "name": str,
+            "dob": datetime
+        }
+        self.assertEqual(util.traverse(data), expected)
+
+    def test_custom_datatype(self):
+        data = {
+            "name": "Maurice Hall",
+            "dob": datetime(1898, 10, 1),
+            "fakedata": FakeDataType()
+        }
+        expected = {
+            "name": str,
+            "dob": datetime,
+            "fakedata": FakeDataType
         }
         self.assertEqual(util.traverse(data), expected)
 
