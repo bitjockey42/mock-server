@@ -65,6 +65,14 @@ jupyter = ["ipython (>=7.8.0)", "tokenize-rt (>=3.2.0)"]
 uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
+name = "bottle"
+version = "0.12.23"
+description = "Fast and simple WSGI-framework for small web-applications."
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "click"
 version = "8.1.3"
 description = "Composable command line interface toolkit"
@@ -414,7 +422,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "7e6f12363c579cc780cc477be2781300de61d934a2e37faab434854e3e40e282"
+content-hash = "54b5b708887e097f1215d7036c1577505656ab37f762be288d5bcee6a6bf6072"
 
 [metadata.files]
 appnope = []
@@ -425,6 +433,7 @@ backcall = [
     {file = "backcall-0.2.0.tar.gz", hash = "sha256:5cbdbf27be5e7cfadb448baf0aa95508f91f2bbc6c6437cd9cd06e2a4c215e1e"},
 ]
 black = []
+bottle = []
 click = []
 colorama = []
 decorator = []

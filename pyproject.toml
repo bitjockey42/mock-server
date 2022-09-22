@@ -11,6 +11,7 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.9"
 Faker = "^14.2.0"
+bottle = "^0.12.23"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.3"
