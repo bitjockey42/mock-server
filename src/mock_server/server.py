@@ -6,5 +6,5 @@ def hello():
     return "Hello World!"
 
 
-def start():
-    run(host="localhost", port=8080, debug=True)
+def start_server(host, port, debug):
+    run(host=host, port=port, debug=debug)
