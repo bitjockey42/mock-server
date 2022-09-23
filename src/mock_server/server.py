@@ -22,4 +22,5 @@ def callback(resource, endpoint):
 
 
 def start_server(host, port, debug):
+    print(callback_path)
     run(host=host, port=port, debug=debug)
