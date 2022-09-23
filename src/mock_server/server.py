@@ -10,7 +10,9 @@ def hello():
 def callback(resource, endpoint):
     # TODO: Dynamically generate
     request_data = request.json
-    return request_data
+    response = request_data
+    response["query_strings"] = request.query_string
+    return response
 
 
 def start_server(host, port, debug):
