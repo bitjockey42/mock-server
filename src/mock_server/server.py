@@ -12,6 +12,7 @@ def callback(resource, endpoint):
     request_data = request.json
     response = request_data
     response["query_strings"] = request.query_string
+    response["query"] = dict(request.query)
     return response
 
 
