@@ -1,4 +1,4 @@
-from bottle import route, run
+from bottle import request, route, run
 
 
 @route("/hello")
@@ -6,10 +6,11 @@ def hello():
     return "Hello World!"
 
 
-@route('/<resource>/<endpoint>')
+@route('/<resource>/<endpoint>', method='POST')
 def callback(resource, endpoint):
     # TODO: Dynamically generate
-    return f"{resource} - {endpoint}"
+    request_data = request.json
+    return request_data
 
 
 def start_server(host, port, debug):
