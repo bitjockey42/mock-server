@@ -8,8 +8,12 @@ class FakeDataType:
         pass
 
 
+def callback(value):
+    return type(value)
+
+
 def test_traverse_empty():
-    assert util.traverse({}) == {}
+    assert util.traverse({}, callback) == {}
 
 
 def test_traverse_simple():
@@ -18,7 +22,7 @@ def test_traverse_simple():
         "age": 48,
     }
     expected = {"author": str, "age": int}
-    assert util.traverse(data) == expected
+    assert util.traverse(data, callback) == expected
 
 
 def test_traverse_nested():
@@ -32,13 +36,13 @@ def test_traverse_nested():
         "age": int,
         "metadata": {"code": str, "data": {"number": str}},
     }
-    assert util.traverse(data) == expected
+    assert util.traverse(data, callback) == expected
 
 
 def test_traverse_datetime():
     data = {"name": "Maurice Hall", "dob": datetime(1898, 10, 1)}
     expected = {"name": str, "dob": datetime}
-    assert util.traverse(data) == expected
+    assert util.traverse(data, callback) == expected
 
 
 def test_traverse_custom_datatype():
@@ -48,4 +52,4 @@ def test_traverse_custom_datatype():
         "fakedata": FakeDataType(),
     }
     expected = {"name": str, "dob": datetime, "fakedata": FakeDataType}
-    assert util.traverse(data) == expected
+    assert util.traverse(data, callback) == expected

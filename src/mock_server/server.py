@@ -8,6 +8,7 @@ def hello():
 
 @route('/<resource>/<endpoint>')
 def callback(resource, endpoint):
+    # TODO: Dynamically generate
     return f"{resource} - {endpoint}"
 
 
