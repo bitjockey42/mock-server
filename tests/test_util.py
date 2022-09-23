@@ -25,35 +25,19 @@ def test_traverse_nested():
     data = {
         "author": "E.M. Forster",
         "age": 48,
-        "metadata": {
-            "code": "abc1234",
-            "data": {
-                "number": "twelve"
-            }
-        }
+        "metadata": {"code": "abc1234", "data": {"number": "twelve"}},
     }
     expected = {
         "author": str,
         "age": int,
-        "metadata": {
-            "code": str,
-            "data": {
-                "number": str
-            }
-        }
+        "metadata": {"code": str, "data": {"number": str}},
     }
     assert util.traverse(data) == expected
 
 
 def test_traverse_datetime():
-    data = {
-        "name": "Maurice Hall",
-        "dob": datetime(1898, 10, 1)
-    }
-    expected = {
-        "name": str,
-        "dob": datetime
-    }
+    data = {"name": "Maurice Hall", "dob": datetime(1898, 10, 1)}
+    expected = {"name": str, "dob": datetime}
     assert util.traverse(data) == expected
 
 
@@ -61,11 +45,7 @@ def test_traverse_custom_datatype():
     data = {
         "name": "Maurice Hall",
         "dob": datetime(1898, 10, 1),
-        "fakedata": FakeDataType()
+        "fakedata": FakeDataType(),
     }
-    expected = {
-        "name": str,
-        "dob": datetime,
-        "fakedata": FakeDataType
-    }
+    expected = {"name": str, "dob": datetime, "fakedata": FakeDataType}
     assert util.traverse(data) == expected
