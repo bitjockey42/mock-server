@@ -14,4 +14,4 @@ def cli():
 @click.option("-P", "--port", default=8080)
 @click.option("-D", "--debug/--no-debug", default=False)
 def start(host, port, debug):
-    start_server(host, port, debug) 
+    start_server(host, port, debug)

@@ -1,12 +1,17 @@
 from bottle import request, route, run
 
+from mock_server import settings
+
+
+callback_path = f"{settings.BASE_API_PATH}/<resource>/<endpoint>"
+
 
 @route("/hello")
 def hello():
     return "Hello World!"
 
 
-@route('/<resource>/<endpoint>', method='POST')
+@route(callback_path, method="POST")
 def callback(resource, endpoint):
     # TODO: Dynamically generate
     request_data = request.json
