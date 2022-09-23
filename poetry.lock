@@ -361,6 +361,17 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
 six = ">=1.5"
 
 [[package]]
+name = "python-dotenv"
+version = "0.21.0"
+description = "Read key-value pairs from a .env file and set them as environment variables"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+cli = ["click (>=5.0)"]
+
+[[package]]
 name = "six"
 version = "1.16.0"
 description = "Python 2 and 3 compatibility utilities"
@@ -422,7 +433,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "3698127815ddd428d49c73edc30f77e5994550c3ff57a4627168e92250faf58d"
+content-hash = "66deb50a1f833ef898f275a89c76cb253b08f03705be02725b04e6da8c1888a1"
 
 [metadata.files]
 appnope = []
@@ -477,6 +488,7 @@ pygments = []
 pyparsing = []
 pytest = []
 python-dateutil = []
+python-dotenv = []
 six = []
 stack-data = []
 tomli = []
