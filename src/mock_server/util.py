@@ -1,4 +1,5 @@
 import json
+import re
 from typing import Dict
 
 from faker import Faker
@@ -58,6 +59,9 @@ def get_provider(key, type_name):
     if "email" in key.lower():
         return "email"
 
+    if "address" in key.lower():
+        return "address"
+
     return None
 
 
@@ -69,3 +73,11 @@ def read_json(filename):
 def write_json(data, filename):
     with open(filename, "w+") as f:
         json.dump(data, f, indent=4)
+
+
+def to_snake_case(name):
+    # https://stackoverflow.com/a/1176023
+    name = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
+    name = re.sub('__([A-Z])', r'_\1', name)
+    name = re.sub('([a-z0-9])([A-Z])', r'\1_\2', name)
+    return name.lower()
