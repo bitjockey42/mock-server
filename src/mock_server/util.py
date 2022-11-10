@@ -4,8 +4,28 @@ from typing import Dict
 from faker import Faker
 
 
-def traverse(data: Dict, callback):
+def generate_structure_from_file(
+    input_filename: str,
+    output_filename: str = None,
+):
+    data = read_json(input_filename)
+    return generate_structure(data, output_filename)
+
+
+def generate_structure(data: Dict, output_filename: str = None):
+    traversed = traverse(data)
+
+    if output_filename:
+        write_json(traversed, output_filename)
+
+    return traversed
+
+
+def traverse(data: Dict, callback=None):
     """Traverse data and process"""
+    if callback is None:
+        callback = lambda key, value: determine_type(key, value)
+
     traversed = {}
 
     for k, v in data.items():
