@@ -1,5 +1,9 @@
 from flask import Flask, request
+from pathlib import Path
 
+from mock_server.util import read_json
+
+ROOT_DIR = Path(__file__).parent.parent.parent
 
 app = Flask(__name__)
 
@@ -11,9 +15,7 @@ def hello_world():
 
 @app.route("/<path:subpath>", methods=["POST"])
 def callback(subpath):
-    request_data = request.json
-    response = request_data
-    response["query_strings"] = request.args
+    response = read_json(ROOT_DIR.joinpath("tmp", "test.json"))
     return response
 
 
