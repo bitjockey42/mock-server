@@ -22,6 +22,19 @@ def generate_structure(data: Dict, output_filename: str = None):
     return traversed
 
 
+def generate_value(attrs):
+    if attrs.get("generator") is None:
+        return None
+
+    generator = getattr(fake, attrs["generator"])
+
+    length = attrs.get("length")
+    if length is not None and attrs["generator"] != "date_time":
+        return generator(length) 
+
+    return generator()
+
+
 def traverse(data: Dict, callback=None):
     """Traverse data and process"""
     if callback is None:
