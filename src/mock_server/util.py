@@ -50,7 +50,7 @@ def generate_value(key, value):
 
     max_length = value.get("max_length")
     if max_length is not None:
-         return generator(max_length) 
+         return generator(max_length)
 
     return generator()
 
@@ -78,8 +78,9 @@ def determine_type(key, value):
     length = get_length(value)
 
     return {
+        "required": type_name != "NoneType",
         "type": type_name,
-        "generator": get_generator(key),
+        "generator": get_generator(key, type_name),
         "length": length
     }
 
@@ -110,11 +111,16 @@ def get_generator(key, type_name=None):
     if "number" in key and key != "phone_number":
         return "random_number"
 
+    generator_name = None
+
     try:
         generator = getattr(fake, key)
         generator_name = generator.__name__
     except AttributeError:
-        generator_name = None
+        if type_name == "str":
+            generator_name = "lexify"
+        elif type_name == "int":
+            generator_name = "numerify"
     
     return generator_name
 
