@@ -45,9 +45,9 @@ def generate_value(key, value):
 
     generator = getattr(fake, value["generator"])
 
-    # length = value.get("length")
-    # if length is not None and v["generator"]:
-    #     return generator(length) 
+    max_length = value.get("max_length")
+    if max_length is not None:
+         return generator(max_length) 
 
     return generator()
 
