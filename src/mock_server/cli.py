@@ -1,7 +1,7 @@
 import click
 
 from mock_server.server import start_server
-from mock_server.util import generate_structure_from_file
+from mock_server.util import generate_structure_from_file, generate_data_from_file
 
 
 @click.group()
@@ -23,3 +23,10 @@ def start(host, port, debug):
 @click.option("-o", "--output-filename")
 def generate(input_filename, output_filename):
     generate_structure_from_file(input_filename, output_filename)
+
+
+@cli.command()
+@click.argument("input_filename", type=click.Path(exists=True))
+@click.option("-o", "--output-filename")
+def generate_data(input_filename, output_filename):
+    generate_data_from_file(input_filename, output_filename)

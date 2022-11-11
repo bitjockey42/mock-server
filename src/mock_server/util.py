@@ -22,7 +22,24 @@ def generate_structure(data: Dict, output_filename: str = None):
     return traversed
 
 
-def generate_value(attrs):
+def generate_data_from_file(
+    input_filename: str,
+    output_filename: str = None,
+):
+    data = read_json(input_filename)
+    return generate_data(data, output_filename)
+
+
+def generate_data(data: Dict, output_filename: str = None):
+    generated = traverse(data, callback=generate_value)
+    
+    if output_filename:
+        write_json(generated, output_filename)
+
+    return generated
+
+
+def generate_value(key, attrs):
     if attrs.get("generator") is None:
         return None
 
