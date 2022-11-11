@@ -40,6 +40,9 @@ def generate_data(data: Dict, output_filename: str = None):
 
 
 def generate_value(key, value):
+    if value.get("static"):
+        return value.get("static")
+
     if value.get("generator") is None:
         return None
 
