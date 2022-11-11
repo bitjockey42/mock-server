@@ -26,12 +26,12 @@ def callback(subpath):
     # Get the data structure
     resource = get_resource(subpath)
     # Find structure file
-    json_filepath = ROOT_DIR.joinpath("tmp", f"{resource}.json")
+    json_filepath = ROOT_DIR.joinpath("tmp", f"{resource}.struct.json")
     json_data = read_json(json_filepath)
     # Generate Data
-    #data = generate_data(json_data) 
+    data = generate_data(json_data) 
     # Set response
-    response = json2xml.Json2xml(json_data).to_xml()
+    response = json2xml.Json2xml(data).to_xml()
     return response
 
 
