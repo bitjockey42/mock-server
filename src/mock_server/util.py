@@ -2,7 +2,7 @@ import json
 import re
 from typing import Dict
 
-from faker import Faker
+from mock_server.provider import fake, get_provider
 
 
 def generate_structure_from_file(
@@ -43,26 +43,8 @@ def determine_type(key, value):
     type_name = type(value).__name__
     return {
         "type": type_name,
-        "provider": get_provider(key, type_name),
+        "provider": get_provider(to_snake_case(key)),
     }
-
-
-def get_provider(key, type_name):
-    if any([
-        "date" in key.lower(),
-        "period" in key.lower(),
-    ]):
-        if type_name == "int":
-            return "iso8601"
-        return "date_time"
-
-    if "email" in key.lower():
-        return "email"
-
-    if "address" in key.lower():
-        return "address"
-
-    return None
 
 
 def read_json(filename):
