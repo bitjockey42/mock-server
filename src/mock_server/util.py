@@ -42,11 +42,22 @@ def determine_type(key, value):
     """Infer Faker provider type from key name"""
     type_name = type(value).__name__
     key = to_snake_case(key)
+    length = get_length(value)
 
     return {
         "type": type_name,
         "generator": get_generator(key),
+        "length": length
     }
+
+
+def get_length(value):
+    try:
+        length = len(value)
+    except TypeError:
+        length = None
+    
+    return length 
 
 
 def get_generator(key, type_name=None):
