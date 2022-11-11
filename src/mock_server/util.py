@@ -43,17 +43,29 @@ def determine_type(key, value):
     type_name = type(value).__name__
     key = to_snake_case(key)
 
-    try:
-        generator = getattr(fake, key)
-    except AttributeError:
-        generator_name = None
-    else:
-        generator_name = generator.__name__
-
     return {
         "type": type_name,
-        "generator": generator_name,
+        "generator": get_generator(key),
     }
+
+
+def get_generator(key, type_name=None):
+    # Date/Time
+    if any([
+        "date" in key,
+        "period" in key,
+    ]):
+        if type_name == "int":
+            return "iso8601"
+        return "date_time"
+
+    try:
+        generator = getattr(fake, key)
+        generator_name = generator.__name__
+    except AttributeError:
+        generator_name = None
+    
+    return generator_name
 
 
 def read_json(filename):
