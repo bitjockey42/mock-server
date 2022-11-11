@@ -59,6 +59,13 @@ def get_generator(key, type_name=None):
             return "iso8601"
         return "date_time"
 
+    # Address
+    if "address1" in key:
+        return "street_address"
+
+    if "number" in key:
+        return "random_number"
+
     try:
         generator = getattr(fake, key)
         generator_name = generator.__name__
