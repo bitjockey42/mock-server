@@ -39,14 +39,14 @@ def generate_data(data: Dict, output_filename: str = None):
     return generated
 
 
-def generate_value(key, attrs):
-    if attrs.get("generator") is None:
+def generate_value(key, value):
+    if value.get("generator") is None:
         return None
 
-    generator = getattr(fake, attrs["generator"])
+    generator = getattr(fake, value["generator"])
 
-    length = attrs.get("length")
-    if length is not None and attrs["generator"] != "date_time":
+    length = value.get("length")
+    if length is not None and value["generator"] != "date_time":
         return generator(length) 
 
     return generator()
@@ -60,10 +60,10 @@ def traverse(data: Dict, callback=None):
     traversed = {}
 
     for k, v in data.items():
-        if isinstance(v, dict):
-            traversed[k] = traverse(v, callback)
-        else:
+        if "generator" in v or not isinstance(v, dict):
             traversed[k] = callback(key=k, value=v)
+        elif isinstance(v, dict):
+            traversed[k] = traverse(v, callback)
 
     return traversed
 
