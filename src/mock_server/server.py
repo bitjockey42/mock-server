@@ -4,6 +4,7 @@ from mock_server import settings
 
 
 callback_path = f"{settings.BASE_API_PATH}/<resource>/<endpoint>"
+# "/".join(["resource", "endpoint"])
 
 
 @route("/hello")
@@ -12,8 +13,7 @@ def hello():
 
 
 @route(callback_path, method="POST")
-def callback(resource, endpoint):
-    # TODO: Dynamically generate
+def callback(resource, endpoint):  # this could also be dynamically generated
     request_data = request.json
     response = request_data
     response["query_strings"] = request.query_string

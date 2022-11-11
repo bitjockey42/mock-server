@@ -46,7 +46,7 @@ def generate_value(key, value):
     generator = getattr(fake, value["generator"])
 
     # length = value.get("length")
-    # if length is not None and value["generator"] != "date_time":
+    # if length is not None and v["generator"]:
     #     return generator(length) 
 
     return generator()
@@ -104,7 +104,7 @@ def get_generator(key, type_name=None):
     if "address1" in key:
         return "street_address"
 
-    if "number" in key:
+    if "number" in key and key != "phone_number":
         return "random_number"
 
     try:
