@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 
 
 app = Flask(__name__)
@@ -11,7 +11,10 @@ def hello_world():
 
 @app.route("/<path:subpath>", methods=["POST"])
 def callback(subpath):
-    return f"{subpath}"
+    request_data = request.json
+    response = request_data
+    response["query_strings"] = request.args
+    return response
 
 
 def start_app(host, port, debug):
