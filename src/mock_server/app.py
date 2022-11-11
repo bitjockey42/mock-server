@@ -20,12 +20,18 @@ def hello_world():
 
 
 @api.representation("application/xml")
-@app.route("/<path:subpath>", methods=["POST"])
+@app.route("/<path:subpath>", methods=["POST", "GET"])
 def callback(subpath):
-    json_filename = ROOT_DIR.joinpath("tmp", "test.json")
-    data = readfromjson(json_filename)
+    resource = get_resource(subpath)
+    json_filepath = ROOT_DIR.joinpath("tmp", f"{resource}.json")
+    data = readfromjson(json_filepath)
     response = json2xml.Json2xml(data).to_xml()
     return response
+
+
+def get_resource(subpath):
+    parts = subpath.split("/")
+    return parts[0]
 
 
 def start_app(host, port, debug):
