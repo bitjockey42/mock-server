@@ -1,5 +1,7 @@
 import importlib
 
+from faker import Faker
+
 
 def get_provider(key):
     try:
@@ -9,3 +11,6 @@ def get_provider(key):
         raise ValueError(f"No provider for {key}")
 
     return provider
+
+
+fake = Faker()

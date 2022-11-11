@@ -2,7 +2,7 @@ import json
 import re
 from typing import Dict
 
-from mock_server.provider import fake, get_provider
+from mock_server.provider import fake
 
 
 def generate_structure_from_file(
@@ -41,9 +41,18 @@ def traverse(data: Dict, callback=None):
 def determine_type(key, value):
     """Infer Faker provider type from key name"""
     type_name = type(value).__name__
+    key = to_snake_case(key)
+
+    try:
+        generator = getattr(fake, key)
+    except AttributeError:
+        generator_name = None
+    else:
+        generator_name = generator.__name__
+
     return {
         "type": type_name,
-        "provider": get_provider(to_snake_case(key)),
+        "generator": generator_name,
     }
 
 
