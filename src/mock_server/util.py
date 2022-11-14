@@ -76,13 +76,12 @@ def generate_from_request_data(
     request_data: Dict,
     request_tree: List[Dict],
 ):
-
     # Traverse through request
-    for nodes in request_tree:
+    for node in request_tree:
         request_value = request_data
 
-        for node in nodes["nodes"]:
-            request_value = request_value[node]
+        for key in node["keys"]:
+            request_value = request_value[key]
 
         print(request_value)
 
