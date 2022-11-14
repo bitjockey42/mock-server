@@ -90,8 +90,12 @@ def generate_from_request_data(
     for node in request_tree:
         res = response_data
 
+        if "value" not in node:
+            continue
+
         for key in node["response_keys"]:
-            if isinstance(res[key], Dict):
+            print(key)
+            if key in res and isinstance(res[key], Dict):
                 res = res[key]
         
         res[key] = node["value"]

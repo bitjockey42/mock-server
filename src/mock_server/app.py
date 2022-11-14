@@ -56,6 +56,7 @@ def make_response(request_data, resource, strategy: str = "from_request"):
         request_tree = read_json(
             DATA_DIR.joinpath(f"{resource}.request.tree.json")
         )
+        print(response_data)
         data = generate_from_request_data(
             request_data=request_data,
             response_data=response_data,
