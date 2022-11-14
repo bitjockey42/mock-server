@@ -1,6 +1,6 @@
 import json
 import re
-from typing import Dict
+from typing import Dict, List
 
 from mock_server.provider import fake
 from mock_server.settings import DATA_DIR
@@ -70,6 +70,21 @@ def traverse(data: Dict, callback=None, *args, **kwargs):
             traversed[k] = callback(key=k, value=v, *args, **kwargs)
 
     return traversed
+
+
+def generate_from_request_data(
+    request_data: Dict,
+    request_tree: List[Dict],
+):
+
+    # Traverse through request
+    for nodes in request_tree:
+        request_value = request_data
+
+        for node in nodes["nodes"]:
+            request_value = request_value[node]
+
+        print(request_value)
 
 
 def determine_type(key, value):
