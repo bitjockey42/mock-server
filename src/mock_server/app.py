@@ -31,7 +31,7 @@ def callback(subpath):
         request_data = xmltodict.parse(request.data.decode())
 
     resource = get_resource(subpath)
-    response = make_response(resource)
+    response = make_response(request_data, resource)
     return response
 
 
@@ -40,7 +40,9 @@ def get_resource(subpath):
     return parts[0]
 
 
-def make_response(resource, should_generate: bool = False):
+def make_response(request_data, resource, should_generate: bool = False):
+    print(request_data)
+
     filename = f"{resource}.struct.json" if should_generate else f"{resource}.json"
     filepath = DATA_DIR.joinpath(filename)
 

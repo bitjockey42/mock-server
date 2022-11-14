@@ -3,6 +3,7 @@ import re
 from typing import Dict
 
 from mock_server.provider import fake
+from mock_server.settings import DATA_DIR
 
 
 def generate_structure_from_file(
@@ -55,7 +56,7 @@ def generate_value(key, value):
     return generator()
 
 
-def traverse(data: Dict, callback=None):
+def traverse(data: Dict, callback=None, *args, **kwargs):
     """Traverse data and process"""
     if callback is None:
         callback = lambda key, value: determine_type(key, value)
@@ -64,9 +65,9 @@ def traverse(data: Dict, callback=None):
 
     for k, v in data.items():
         if isinstance(v, dict) and "generator" not in v:
-            traversed[k] = traverse(v, callback)
+            traversed[k] = traverse(v, callback, *args, **kwargs)
         else:
-            traversed[k] = callback(key=k, value=v)
+            traversed[k] = callback(key=k, value=v, *args, **kwargs)
 
     return traversed
 
