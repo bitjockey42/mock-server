@@ -88,12 +88,13 @@ def generate_from_request_data(
 
     # Traverse the response data
     for node in request_tree:
-        response_value = response_data
+        res = response_data
 
         for key in node["response_keys"]:
-            response_value = response_data[key]
+            if isinstance(res[key], Dict):
+                res = res[key]
         
-        node["value"] = response_value
+        res[key] = node["value"]
 
     return response_data 
 
