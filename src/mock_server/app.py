@@ -1,4 +1,5 @@
 import json
+
 from pathlib import Path
 
 from flask import Flask, request
@@ -8,8 +9,7 @@ from json2xml import json2xml
 from json2xml.utils import readfromstring
 
 from mock_server.util import generate_data, read_json
-
-ROOT_DIR = Path(__file__).parent.parent.parent
+from mock_server.settings import DATA_DIR
 
 app = Flask(__name__)
 api = Api(app)
@@ -25,19 +25,25 @@ def hello_world():
 def callback(subpath):
     # Get the data structure
     resource = get_resource(subpath)
-    # Find structure file
-    json_filepath = ROOT_DIR.joinpath("tmp", f"{resource}.struct.json")
-    json_data = read_json(json_filepath)
-    # Generate Data
-    data = generate_data(json_data) 
-    # Set response
-    response = json2xml.Json2xml(data).to_xml()
+    response = make_response(resource)
     return response
 
 
 def get_resource(subpath):
     parts = subpath.split("/")
     return parts[0]
+
+
+def make_response(resource, should_generate: bool = False):
+    filename = f"{resource}.struct.json" if should_generate else f"{resource}.json"
+    filepath = DATA_DIR.joinpath(filename)
+
+    if should_generate:
+        data = generate_data(read_json(filepath))
+    else:
+        data = read_json(filepath)
+
+    return json2xml.Json2xml(data).to_xml()
 
 
 def start_app(host, port, debug):
