@@ -17,6 +17,7 @@ python-dotenv = "^0.21.0"
 flask-restful = "^0.3.9"
 lxml = "^4.9.1"
 json2xml = "^3.20.0"
+xmltodict = "^0.13.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.3"

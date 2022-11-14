@@ -1,5 +1,7 @@
 import json
 
+import xmltodict
+
 from pathlib import Path
 
 from flask import Flask, request
@@ -23,7 +25,11 @@ def hello_world():
 @api.representation("application/xml")
 @app.route("/<path:subpath>", methods=["POST", "GET"])
 def callback(subpath):
-    # Get the data structure
+    request_data = None
+
+    if request.data:
+        request_data = xmltodict.parse(request.data.decode())
+
     resource = get_resource(subpath)
     response = make_response(resource)
     return response
