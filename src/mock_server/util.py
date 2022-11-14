@@ -75,18 +75,27 @@ def traverse(data: Dict, callback=None, *args, **kwargs):
 def generate_from_request_data(
     request_data: Dict,
     request_tree: List[Dict],
+    response_data: Dict,
 ):
-    # Traverse through request
+    # Traverse through request data
     for node in request_tree:
         request_value = request_data
 
-        for key in node["keys"]:
+        for key in node["request_keys"]:
             request_value = request_value[key]
 
         node["value"] = request_value
-        print(request_value)
 
-    return request_tree
+    # Traverse the response data
+    for node in request_tree:
+        response_value = response_data
+
+        for key in node["response_keys"]:
+            response_value = response_data[key]
+        
+        node["value"] = response_value
+
+    return response_data 
 
 
 def determine_type(key, value):
