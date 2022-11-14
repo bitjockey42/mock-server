@@ -95,6 +95,11 @@ def get_length(value):
 
 
 def get_generator(key, type_name=None):
+    key_parts = key.split("_")
+
+    if "id" in key_parts[-1].lower():
+        return "numerify"
+
     # Date/Time
     if any([
         "date" in key,

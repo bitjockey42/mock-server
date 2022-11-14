@@ -29,7 +29,7 @@ def app(host, port, debug):
 
 @cli.command()
 @click.argument("input_filename", type=click.Path(exists=True))
-@click.option("-o", "--output-filename")
+@click.option("-o", "--output-filename", type=click.Path(exists=False))
 def generate(input_filename, output_filename):
     generate_structure_from_file(input_filename, output_filename)
 
