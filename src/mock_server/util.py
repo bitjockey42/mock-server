@@ -83,7 +83,10 @@ def generate_from_request_data(
         for key in node["keys"]:
             request_value = request_value[key]
 
+        node["value"] = request_value
         print(request_value)
+
+    return request_tree
 
 
 def determine_type(key, value):
