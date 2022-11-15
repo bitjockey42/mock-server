@@ -82,7 +82,9 @@ def generate_from_request_data(
         request_value = request_data
 
         for key in node["request_keys"]:
-            request_value = request_value[key]
+            request_value = request_value.get(key, None)
+            if request_value is None and node.get("required", True):
+                raise AttributeError(f"{key} not found in request") 
 
         node["value"] = request_value
 
@@ -94,7 +96,6 @@ def generate_from_request_data(
             continue
 
         for key in node["response_keys"]:
-            print(key)
             if key in res and isinstance(res[key], Dict):
                 res = res[key]
 
