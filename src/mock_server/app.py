@@ -31,7 +31,7 @@ def callback(subpath):
         request_data = xmltodict.parse(request.data.decode())
 
     resource = get_resource(subpath)
-    response = make_response(request_data, resource)
+    response = make_response(request_data, resource, strategy="from_request")
     return response
 
 
@@ -41,6 +41,7 @@ def get_resource(subpath):
 
 
 def make_response(request_data, resource, strategy: str = "from_request"):
+    print("----request------")
     print(request_data)
 
     filename = (
@@ -56,12 +57,13 @@ def make_response(request_data, resource, strategy: str = "from_request"):
         request_tree = read_json(
             DATA_DIR.joinpath(f"{resource}.request.tree.json")
         )
-        print(response_data)
         data = generate_from_request_data(
             request_data=request_data,
             response_data=response_data,
             request_tree=request_tree,
         )
+        print("-----response-------")
+        print(data)
     else:
         data = response_data
 
