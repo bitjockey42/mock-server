@@ -10,7 +10,12 @@ from flask_restful import Api
 from json2xml import json2xml
 from json2xml.utils import readfromstring
 
-from mock_server.util import generate_data, read_json, generate_from_request_data
+from mock_server.util import (
+    generate_data,
+    read_json,
+    generate_from_request_data,
+    write_json,
+)
 from mock_server.settings import DATA_DIR
 
 app = Flask(__name__)
@@ -41,6 +46,7 @@ def get_resource(subpath):
 
 
 def make_response(request_data, resource, strategy: str = "from_request"):
+    print(f"Resource: {resource}")
     print("----request------")
     print(request_data)
 
@@ -54,9 +60,7 @@ def make_response(request_data, resource, strategy: str = "from_request"):
     if strategy == "generate":
         data = generate_data(response_data)
     elif strategy == "from_request":
-        request_tree = read_json(
-            DATA_DIR.joinpath(f"{resource}.request.tree.json")
-        )
+        request_tree = read_json(DATA_DIR.joinpath(f"{resource}.request.tree.json"))
         data = generate_from_request_data(
             request_data=request_data,
             response_data=response_data,
@@ -64,6 +68,9 @@ def make_response(request_data, resource, strategy: str = "from_request"):
         )
         print("-----response-------")
         print(data)
+
+        print("-----saving-----")
+        write_json(data, filename)
     else:
         data = response_data
 

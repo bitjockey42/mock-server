@@ -33,7 +33,7 @@ def generate_data_from_file(
 
 def generate_data(data: Dict, output_filename: str = None):
     generated = traverse(data, callback=generate_value)
-    
+
     if output_filename:
         write_json(generated, output_filename)
 
@@ -51,7 +51,7 @@ def generate_value(key, value):
 
     max_length = value.get("max_length")
     if max_length is not None:
-         return generator(max_length)
+        return generator(max_length)
 
     return generator()
 
@@ -97,10 +97,10 @@ def generate_from_request_data(
             print(key)
             if key in res and isinstance(res[key], Dict):
                 res = res[key]
-        
+
         res[key] = node["value"]
 
-    return response_data 
+    return response_data
 
 
 def determine_type(key, value):
@@ -113,7 +113,7 @@ def determine_type(key, value):
         "required": type_name != "NoneType",
         "type": type_name,
         "generator": get_generator(key, type_name),
-        "length": length
+        "length": length,
     }
 
 
@@ -122,8 +122,8 @@ def get_length(value):
         length = len(value)
     except TypeError:
         length = None
-    
-    return length 
+
+    return length
 
 
 def get_generator(key, type_name=None):
@@ -133,10 +133,12 @@ def get_generator(key, type_name=None):
         return "numerify"
 
     # Date/Time
-    if any([
-        "date" in key,
-        "period" in key,
-    ]):
+    if any(
+        [
+            "date" in key,
+            "period" in key,
+        ]
+    ):
         if type_name == "int":
             return "unix_time"
         return "iso8601"
@@ -158,7 +160,7 @@ def get_generator(key, type_name=None):
             generator_name = "lexify"
         elif type_name == "int":
             generator_name = "numerify"
-    
+
     return generator_name
 
 
@@ -174,7 +176,7 @@ def write_json(data, filename):
 
 def to_snake_case(name):
     # https://stackoverflow.com/a/1176023
-    name = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
-    name = re.sub('__([A-Z])', r'_\1', name)
-    name = re.sub('([a-z0-9])([A-Z])', r'\1_\2', name)
+    name = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", name)
+    name = re.sub("__([A-Z])", r"_\1", name)
+    name = re.sub("([a-z0-9])([A-Z])", r"\1_\2", name)
     return name.lower()
