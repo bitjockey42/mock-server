@@ -70,7 +70,7 @@ def make_response(request_data, resource, strategy: str = "from_request"):
         depends_on = config.get("depends_on", "request_data")
 
         if depends_on != "request_data":
-            request_data = read_json(DATA_DIR.joinpath(f"{depends_on}.json"))
+            request_data = read_json(DATA_DIR.joinpath(f"{depends_on}.response.json"))
         
         data = generate_from_request_data(
             request_data=request_data,
@@ -82,7 +82,7 @@ def make_response(request_data, resource, strategy: str = "from_request"):
         print(data)
 
         print(f"-----saving {filename}-----")
-        write_json(data, filename)
+        write_json(data, DATA_DIR.joinpath(filename))
     else:
         data = response_data
 
