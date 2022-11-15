@@ -51,7 +51,9 @@ def make_response(request_data, resource, strategy: str = "from_request"):
     print(request_data)
 
     filename = (
-        f"{resource}.struct.json" if strategy == "generate" else f"{resource}.response.json"
+        f"{resource}.struct.json"
+        if strategy == "generate"
+        else f"{resource}.response.json"
     )
     filepath = DATA_DIR.joinpath(filename)
 
@@ -63,19 +65,23 @@ def make_response(request_data, resource, strategy: str = "from_request"):
         # Read config
         config = read_json(DATA_DIR.joinpath(f"{resource}.config.json"))
 
-        # Get request tree
-        request_tree = config["request_tree"]
-
         # Additional resources on which to get info, if any
         depends_on = config.get("depends_on", "request_data")
 
         if depends_on != "request_data":
             request_data = read_json(DATA_DIR.joinpath(f"{depends_on}.response.json"))
-        
+
+        # Get request tree
+        request_tree = config["request_tree"]
+
+        # Get response overrides, if any
+        response_overrides = config.get("response_overrides", None)
+
         data = generate_from_request_data(
             request_data=request_data,
             response_data=response_data,
             request_tree=request_tree,
+            response_overrides=response_overrides,
         )
 
         print("-----response-------")

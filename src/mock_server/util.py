@@ -76,6 +76,7 @@ def generate_from_request_data(
     request_data: Dict,
     request_tree: List[Dict],
     response_data: Dict,
+    response_overrides: List[Dict] = None,
 ):
     # Traverse through request data
     for node in request_tree:
@@ -84,7 +85,7 @@ def generate_from_request_data(
         for key in node["request_keys"]:
             request_value = request_value.get(key, None)
             if request_value is None and node.get("required", True):
-                raise AttributeError(f"{key} not found in request") 
+                raise AttributeError(f"{key} not found in request")
 
         node["value"] = request_value
 
@@ -100,6 +101,17 @@ def generate_from_request_data(
                 res = res[key]
 
         res[key] = node["value"]
+
+    # Override response data
+    if response_overrides:
+        for response_override in response_overrides:
+            res = response_data
+
+            for key in response_override["response_keys"]:
+                if key in res and isinstance(res[key], Dict):
+                    res = res[key]
+
+            res[key] = generate_value(key, response_override)
 
     return response_data
 
