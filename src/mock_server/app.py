@@ -16,7 +16,7 @@ from mock_server.util import (
     generate_from_request_data,
     write_json,
 )
-from mock_server.settings import DATA_DIR
+from mock_server.settings import DATA_DIR, DATA_STRATEGY
 
 app = Flask(__name__)
 api = Api(app)
@@ -36,7 +36,7 @@ def callback(subpath):
         request_data = xmltodict.parse(request.data.decode())
 
     resource = get_resource(subpath)
-    response = make_response(request_data, resource, strategy="from_request")
+    response = make_response(request_data, resource, strategy=DATA_STRATEGY)
     return response
 
 
@@ -45,10 +45,7 @@ def get_resource(subpath):
     return parts[0]
 
 
-def make_response(request_data, resource, strategy: str = None):
-    if not bool(strategy):
-        strategy = os.getenv("DATA_STRATEGY", "from_request")
-
+def make_response(request_data, resource, strategy):
     print(f"Resource: {resource}")
     print("----request------")
     print(request_data)
