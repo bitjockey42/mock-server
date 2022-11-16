@@ -1,4 +1,4 @@
-import json
+import os
 
 import xmltodict
 
@@ -45,7 +45,10 @@ def get_resource(subpath):
     return parts[0]
 
 
-def make_response(request_data, resource, strategy: str = "from_request"):
+def make_response(request_data, resource, strategy: str = None):
+    if not bool(strategy):
+        strategy = os.getenv("DATA_STRATEGY", "from_request")
+
     print(f"Resource: {resource}")
     print("----request------")
     print(request_data)
@@ -96,5 +99,6 @@ def make_response(request_data, resource, strategy: str = "from_request"):
     return json2xml.Json2xml(data).to_xml()
 
 
-def start_app(host, port, debug):
+def start_app(host, port, debug, strategy):
+    os.environ["DATA_STRATEGY"] = strategy
     app.run(host=host, port=port, debug=debug)

@@ -23,8 +23,9 @@ def start(host, port, debug):
 @click.option("-H", "--host", default="localhost")
 @click.option("-P", "--port", default=8080)
 @click.option("-D", "--debug/--no-debug", default=False)
-def app(host, port, debug):
-    start_app(host, port, debug)
+@click.option("-S", "--strategy", default="from_request")
+def app(host, port, debug, strategy):
+    start_app(host, port, debug, strategy)
 
 
 @cli.command()
