@@ -8,7 +8,6 @@ from flask import Flask, request
 from flask_restful import Api
 
 from json2xml import json2xml
-from json2xml.utils import readfromstring
 
 from mock_server.util import (
     generate_data,
@@ -45,7 +44,9 @@ def get_resource(subpath):
     return parts[0]
 
 
-def make_response(request_data, resource, strategy):
+def make_response(request_data, resource, strategy: str = DATA_STRATEGY):
+    print(f"STRATEGY: {strategy}")
+
     print(f"Resource: {resource}")
     print("----request------")
     print(request_data)
@@ -90,12 +91,13 @@ def make_response(request_data, resource, strategy):
         output_filename = f"{resource}.json"
         print(f"-----saving {output_filename}-----")
         write_json(data, DATA_DIR.joinpath(output_filename))
+    elif strategy == "static":
+        data = read_json(DATA_DIR.joinpath(f"{resource}.json"))
     else:
         data = response_data
 
     return json2xml.Json2xml(data).to_xml()
 
 
-def start_app(host, port, debug, strategy):
-    os.environ["DATA_STRATEGY"] = strategy
+def start_app(host, port, debug):
     app.run(host=host, port=port, debug=debug)
