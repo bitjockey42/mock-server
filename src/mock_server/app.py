@@ -13,6 +13,7 @@ from mock_server.util import (
     generate_data,
     read_json,
     generate_from_request_data,
+    validate_request_data,
     write_json,
 )
 from mock_server.settings import DATA_DIR, DATA_STRATEGY
@@ -35,7 +36,7 @@ def callback(subpath):
         request_data = xmltodict.parse(request.data.decode())
 
     resource = get_resource(subpath)
-    response = make_response(request_data, resource, strategy=DATA_STRATEGY)
+    response = make_response(request_data, resource, strategy=DATA_STRATEGY, method=request.method)
     return response
 
 
@@ -44,7 +45,7 @@ def get_resource(subpath):
     return parts[0]
 
 
-def make_response(request_data, resource, strategy: str = DATA_STRATEGY):
+def make_response(request_data, resource, strategy: str = DATA_STRATEGY, method = "POST"):
     print(f"STRATEGY: {strategy}")
 
     print(f"Resource: {resource}")
@@ -93,6 +94,8 @@ def make_response(request_data, resource, strategy: str = DATA_STRATEGY):
         write_json(data, DATA_DIR.joinpath(output_filename))
     elif strategy == "static":
         data = read_json(DATA_DIR.joinpath(f"{resource}.json"))
+        if method == "POST":
+            validate_request_data(resource, data)
     else:
         data = response_data
 

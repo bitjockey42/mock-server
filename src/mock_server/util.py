@@ -116,6 +116,20 @@ def generate_from_request_data(
     return response_data
 
 
+def validate_request_data(resource: str, request_data: Dict):
+    config_filename = DATA_DIR.joinpath(f"{resource}.config.json")
+    config = read_json(config_filename)
+    request_tree = config["request_tree"]
+
+    for node in request_tree:
+        request_value = request_data
+
+        for key in node["request_keys"]:
+            request_value = request_value.get(key, None)
+            if request_value is None and node.get("required", True):
+                raise AttributeError(f"{key} not found in request")
+
+
 def determine_type(key, value):
     """Infer Faker provider type from key name"""
     type_name = type(value).__name__
