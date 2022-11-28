@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-BASE_DIR = Path().absolute()
+BASE_DIR = Path().cwd()
 DATA_DIR = BASE_DIR.joinpath("data")
 
 print(DATA_DIR)
