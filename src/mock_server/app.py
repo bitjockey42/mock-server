@@ -30,19 +30,13 @@ def hello_world():
 @api.representation("application/xml")
 @app.route("/<path:subpath>", methods=["POST", "GET"])
 def callback(subpath):
-    request_args = request.args
     request_data = None
 
     if request.data:
-        if request_args.get("format", "XML").upper() == "JSON":
-            request_data = json2xml.Json2xml(request.data).to_xml()
-        else: 
-            request_data = xmltodict.parse(request.data.decode())
+        request_data = xmltodict.parse(request.data.decode())
 
     resource = get_resource(subpath)
-    response = make_response(
-        request_data, resource, strategy=DATA_STRATEGY, method=request.method
-    )
+    response = make_response(request_data, resource, strategy=DATA_STRATEGY, method=request.method)
     return response
 
 
