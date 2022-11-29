@@ -1,4 +1,4 @@
-import os
+import json
 
 import xmltodict
 
@@ -16,7 +16,7 @@ from mock_server.util import (
     validate_request_data,
     write_json,
 )
-from mock_server.settings import DATA_DIR, DATA_STRATEGY
+from mock_server.settings import DATA_DIR, DATA_STRATEGY, DEFAULT_DATA_FORMAT
 
 app = Flask(__name__)
 api = Api(app)
@@ -31,12 +31,21 @@ def hello_world():
 @app.route("/<path:subpath>", methods=["POST", "GET"])
 def callback(subpath):
     request_data = None
+    data_format = request.args.get("format", DEFAULT_DATA_FORMAT).lower()
 
-    if request.data:
+    if request.data and data_format == "xml":
         request_data = xmltodict.parse(request.data.decode())
+    elif request.data and data_format == "json":
+        request_data = json.loads(request.data)
 
     resource = get_resource(subpath)
-    response = make_response(request_data, resource, strategy=DATA_STRATEGY, method=request.method)
+    response = make_response(
+        request_data,
+        resource,
+        strategy=DATA_STRATEGY,
+        method=request.method,
+        data_format=data_format,
+    )
     return response
 
 
@@ -45,7 +54,13 @@ def get_resource(subpath):
     return parts[0]
 
 
-def make_response(request_data, resource, strategy: str = DATA_STRATEGY, method = "POST"):
+def make_response(
+    request_data,
+    resource,
+    strategy: str = DATA_STRATEGY,
+    method="POST",
+    data_format: str = DEFAULT_DATA_FORMAT,
+):
     print(f"STRATEGY: {strategy}")
 
     print(f"Resource: {resource}")
@@ -99,8 +114,12 @@ def make_response(request_data, resource, strategy: str = DATA_STRATEGY, method 
     else:
         data = response_data
 
+    if data_format == "json":
+        return data
+
     return json2xml.Json2xml(data).to_xml()
 
 
 def start_app(host, port, debug):
+    print(f"Default data format: {DEFAULT_DATA_FORMAT}")
     app.run(host=host, port=port, debug=debug)
