@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mock-server"
-version = "0.1.5"
+version = "0.1.0"
 description = "Mock REST API server"
 authors = ["Bitjockey <bitjockey@jackpoint.network>"]
 license = "MIT"

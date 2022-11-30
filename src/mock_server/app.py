@@ -22,14 +22,11 @@ app = Flask(__name__)
 api = Api(app)
 
 
-@app.route("/")
-def hello_world():
-    return "<p>Hello, World!</p>"
-
-
 @api.representation("application/xml")
 @app.route("/<path:subpath>", methods=["POST", "GET"])
 def callback(subpath):
+    print(f"{request.method} {request.url}")
+
     request_data = None
     data_format = request.args.get("format", DEFAULT_DATA_FORMAT).lower()
 
@@ -61,8 +58,6 @@ def make_response(
     method="POST",
     data_format: str = DEFAULT_DATA_FORMAT,
 ):
-    print(f"STRATEGY: {strategy}")
-
     print(f"Resource: {resource}")
     print("----request------")
     print(request_data)
@@ -121,5 +116,9 @@ def make_response(
 
 
 def start_app(host, port, debug):
-    print(f"Default data format: {DEFAULT_DATA_FORMAT}")
+    print(
+        f"Default data format: {DEFAULT_DATA_FORMAT}",
+        f"DATA_DIR: {DATA_DIR}",
+        f"DATA_STRATEGY: {DATA_STRATEGY}",
+    )
     app.run(host=host, port=port, debug=debug)

@@ -7,9 +7,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 BASE_DIR = Path().cwd()
-DATA_DIR = BASE_DIR.joinpath("data")
-
-print(DATA_DIR)
+DEFAULT_DATA_DIR = BASE_DIR.joinpath("data")
+DATA_DIR = os.getenv("DATA_DIR", DEFAULT_DATA_DIR)
 
 if not DATA_DIR.exists():
     DATA_DIR.mkdir(parents=True)
