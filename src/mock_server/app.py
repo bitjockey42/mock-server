@@ -27,7 +27,9 @@ api = Api(app)
 @api.representation("application/xml")
 @app.route("/<path:subpath>", methods=["POST", "GET"])
 def callback(subpath):
-    print(f"{request.method} {request.url}")
+    resource = get_resource(subpath)
+
+    print(f"RESOURCE: ({resource}) {request.method} {request.url}")
 
     request_data = None
     data_format = request.args.get("format", DEFAULT_DATA_FORMAT).lower()
@@ -37,7 +39,6 @@ def callback(subpath):
     elif request.data and data_format == "json":
         request_data = json.loads(request.data)
 
-    resource = get_resource(subpath)
     response = make_response(
         request_data,
         resource,
