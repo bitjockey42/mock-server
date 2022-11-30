@@ -28,8 +28,7 @@ api = Api(app)
 @app.route("/<path:subpath>", methods=["POST", "GET"])
 def callback(subpath):
     resource = get_resource(subpath)
-
-    print(f"RESOURCE: ({resource}) {request.method} {request.url}")
+    print(f"RESOURCE: {resource}")
 
     request_data = None
     data_format = request.args.get("format", DEFAULT_DATA_FORMAT).lower()
