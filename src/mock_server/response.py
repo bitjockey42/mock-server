@@ -26,6 +26,7 @@ def make_response_from_request_data(request_data, resource, strategy):
     # Get response overrides, if any
     response_overrides = config.get("response_overrides", None)
 
+    # Generate data
     data = generate_from_request_data(
         request_data=request_data,
         response_data=base_data,
@@ -35,7 +36,26 @@ def make_response_from_request_data(request_data, resource, strategy):
     output_filename = f"{resource}.json"
     write_json(data, DATA_DIR.joinpath(output_filename))
 
+    # Update dependent resources
+    dependents = config.get("dependents", None)
+
+    if dependents is not None:
+        for resource in dependents:
+            update_dependent_resource(resource, data)
+
     return data
+
+
+def update_dependent_resource(resource, data):
+    config = read_json(DATA_DIR.joinpath(f"{resource}.config.json"))
+    response_data = read_json(DATA_DIR.joinpath(f"{resource}.json"))
+    updated_data = generate_from_request_data(
+        request_data=data,
+        request_tree=config["request_tree"],
+        response_data=response_data,
+    )
+    write_json(updated_data, DATA_DIR.joinpath(f"{resource}.json"))
+    return updated_data
 
 
 def make_response_from_static_data(resource, method):

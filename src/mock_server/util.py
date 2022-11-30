@@ -89,7 +89,7 @@ def generate_from_request_data(
 
         node["value"] = request_value
 
-    # Traverse the response data
+    # Traverse the base response data
     for node in request_tree:
         res = response_data
 
