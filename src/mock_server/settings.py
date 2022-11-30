@@ -6,9 +6,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+BASE_API_PATH = os.getenv("BASE_API_PATH", "")
 BASE_DIR = Path().cwd()
+DEFAULT_DATA_FORMAT = os.getenv("DEFAULT_DATA_FORMAT", "json")
 DEFAULT_DATA_DIR = BASE_DIR.joinpath("data")
 DATA_DIR = Path(os.getenv("DATA_DIR", DEFAULT_DATA_DIR)).resolve()
-BASE_API_PATH = os.getenv("BASE_API_PATH", "")
 DATA_STRATEGY = os.getenv("DATA_STRATEGY", "from_request")
-DEFAULT_DATA_FORMAT = os.getenv("DEFAULT_DATA_FORMAT", "json")
