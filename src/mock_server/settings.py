@@ -8,7 +8,7 @@ load_dotenv()
 
 BASE_DIR = Path().cwd()
 DEFAULT_DATA_DIR = BASE_DIR.joinpath("data")
-DATA_DIR = os.getenv("DATA_DIR", DEFAULT_DATA_DIR)
+DATA_DIR = Path(os.getenv("DATA_DIR", DEFAULT_DATA_DIR)).resolve()
 
 if not DATA_DIR.exists():
     DATA_DIR.mkdir(parents=True)

@@ -117,8 +117,10 @@ def make_response(
 
 def start_app(host, port, debug):
     print(
-        f"""Default data format: {DEFAULT_DATA_FORMAT}
+        f"""
+        DEFAULT_DATA_FORMAT: {DEFAULT_DATA_FORMAT}
         DATA_DIR: {DATA_DIR}
-        DATA_STRATEGY: {DATA_STRATEGY}"""
+        DATA_STRATEGY: {DATA_STRATEGY}
+        """
     )
     app.run(host=host, port=port, debug=debug)
