@@ -19,21 +19,19 @@ def make_response_from_request_data(
 ):
     # Read config
     config = read_json(CONF_DIR.joinpath(f"{resource}.config.json"))
-
-    is_one =  method.upper() == "GET" and identifier
-    is_list = config.get("list", False) and not is_one
+    has_identifier = bool(identifier)
 
     # Handlers
     handlers = {
         "POST": handle_update,
-        "GET": handle_get_list if is_list else handle_get,
+        "GET": handle_get if has_identifier else handle_get_list,
     }
 
     # Get handler
     handler = handlers.get(method, handle_update)
 
     return handler(
-        config.get("source") if is_one else resource,
+        resource,
         request_data,
         strategy,
         config,
@@ -61,8 +59,7 @@ def handle_get(resource, request_data, strategy, config, identifier, *args, **kw
 def handle_get_list(
     resource, request_data, strategy, config, identifier, *args, **kwargs
 ):
-    source = config["source"]
-    data_dir = DATA_DIR.joinpath(source)
+    data_dir = DATA_DIR.joinpath(resource)
 
     response = []
 
