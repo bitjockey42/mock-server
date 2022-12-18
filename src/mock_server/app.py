@@ -41,6 +41,9 @@ def callback(subpath):
     elif request.data and data_format == "json":
         request_data = json.loads(request.data)
 
+    query_args = request.args
+    print(f"QUERY ARGS: {query_args}")
+
     response = make_response(
         request_data,
         resource,
@@ -48,6 +51,7 @@ def callback(subpath):
         method=request.method,
         data_format=data_format,
         subpath_mapping=subpath_mapping,
+        query_args=query_args
     )
     return response
 
@@ -79,6 +83,7 @@ def make_response(
     method="POST",
     data_format: str = DEFAULT_DATA_FORMAT,
     subpath_mapping: Dict = None,
+    query_args: Dict = None,
 ):
     if strategy == "generate":
         data = make_response_from_generator(resource=resource, strategy=strategy)
@@ -90,6 +95,7 @@ def make_response(
             strategy=strategy,
             method=method,
             identifier=identifier,
+            query_args=query_args,
         )
         if method == "POST":
             validate_request_data(resource, data)

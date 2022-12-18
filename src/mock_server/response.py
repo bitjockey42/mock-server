@@ -16,6 +16,7 @@ def make_response_from_request_data(
     strategy: str = None,
     method: str = "GET",
     identifier=None,
+    query_args: Dict = None,
 ):
     # Read config
     config = read_json(CONF_DIR.joinpath(f"{resource}.config.json"))
@@ -36,6 +37,7 @@ def make_response_from_request_data(
         strategy,
         config,
         identifier=identifier,
+        query_args=query_args,
     )
 
 
@@ -52,8 +54,18 @@ def handle_update(resource, request_data, strategy, config, *args, **kwargs):
     return data
 
 
-def handle_get(resource, request_data, strategy, config, identifier, *args, **kwargs):
-    return read_json(DATA_DIR.joinpath(resource, f"{identifier}.json"))
+def handle_get(resource, request_data, strategy, config, identifier, query_args, *args, **kwargs):
+    response = read_json(DATA_DIR.joinpath(resource, f"{identifier}.json"))
+
+    if query_args:
+        _embed = query_args.get("_embed")
+        has_many = config.get("has_many")
+
+        if _embed:
+            _embed_list = handle_get_list(has_many, request_data, strategy, config, identifier)
+            response[has_many] = _embed_list
+
+    return response
 
 
 def handle_get_list(
