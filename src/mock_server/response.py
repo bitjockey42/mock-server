@@ -53,12 +53,13 @@ def handle_get(resource, request_data, strategy, config, identifier, *args, **kw
 def handle_get_list(
     resource, request_data, strategy, config, identifier, *args, **kwargs
 ):
-    response = {resource: []}
+    source = config["source"]
+    data_dir = DATA_DIR.joinpath(source)
 
-    data_dir = DATA_DIR.joinpath(resource)
+    response = []
 
     for filename in data_dir.glob("*.json"):
-        response[resource].append(read_json(filename))
+        response.append(read_json(filename))
 
     return response
 
