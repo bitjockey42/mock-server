@@ -19,11 +19,12 @@ def make_response_from_request_data(
 ):
     # Read config
     config = read_json(CONF_DIR.joinpath(f"{resource}.config.json"))
+    is_list = config.get("list", False)
 
     # Handlers
     handlers = {
         "POST": handle_update,
-        "GET": handle_get,
+        "GET": handle_get_list if is_list else handle_get,
     }
 
     # Get handler
@@ -47,6 +48,19 @@ def handle_update(resource, request_data, strategy, config, *args, **kwargs):
 
 def handle_get(resource, request_data, strategy, config, identifier, *args, **kwargs):
     return read_json(DATA_DIR.joinpath(resource, f"{identifier}.json"))
+
+
+def handle_get_list(
+    resource, request_data, strategy, config, identifier, *args, **kwargs
+):
+    response = {resource: []}
+
+    data_dir = DATA_DIR.joinpath(resource)
+
+    for filename in data_dir.glob("*.json"):
+        response[resource].append(read_json(filename))
+
+    return response
 
 
 def update_resource(
