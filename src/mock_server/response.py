@@ -19,7 +19,9 @@ def make_response_from_request_data(
 ):
     # Read config
     config = read_json(CONF_DIR.joinpath(f"{resource}.config.json"))
-    is_list = config.get("list", False)
+
+    is_one =  method.upper() == "GET" and identifier
+    is_list = config.get("list", False) and not is_one
 
     # Handlers
     handlers = {
@@ -30,7 +32,13 @@ def make_response_from_request_data(
     # Get handler
     handler = handlers.get(method, handle_update)
 
-    return handler(resource, request_data, strategy, config, identifier=identifier)
+    return handler(
+        config.get("source") if is_one else resource,
+        request_data,
+        strategy,
+        config,
+        identifier=identifier,
+    )
 
 
 def handle_update(resource, request_data, strategy, config, *args, **kwargs):
