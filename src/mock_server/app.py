@@ -26,7 +26,7 @@ api = Api(app)
 
 
 @api.representation("application/xml")
-@app.route("/<path:subpath>", methods=["POST", "GET"])
+@app.route("/<path:subpath>", methods=["POST", "GET", "PATCH"])
 def callback(subpath):
     subpath_mapping = get_subpath_mapping(subpath)
     resource = subpath_mapping.get("resource")
