@@ -1,9 +1,9 @@
 import json
 import re
-from typing import Dict, List
+from typing import Dict
 
 from mock_server.provider import fake
-from mock_server.settings import DATA_DIR
+from mock_server.settings import CONF_DIR
 
 
 def generate_structure_from_file(
@@ -74,11 +74,37 @@ def traverse(data: Dict, callback=None, *args, **kwargs):
 
 def generate_from_request_data(
     request_data: Dict,
-    request_tree: List[Dict],
     response_data: Dict,
-    response_overrides: List[Dict] = None,
+    config: Dict,
+    should_override: bool = True,
 ):
+    # Get request tree
+    request_tree = config["request_tree"]
+
     # Traverse through request data
+    request_data = process_request(request_data, request_tree)
+
+    # Construct the response_data by making any necessary modifictions
+    response_data = modify_response(
+        response_data, config["request_tree"], check_value=True
+    )
+
+    # Get response overrides, if any
+    response_overrides = config.get("response_overrides", None)
+    if should_override and response_overrides:
+        response_data = modify_response(
+            response_data,
+            response_overrides,
+            check_value=False,
+            callback_fn=generate_value,
+        )
+
+    identifier = get_identifier(response_data, config)
+
+    return response_data, identifier
+
+
+def process_request(request_data, request_tree):
     for node in request_tree:
         request_value = request_data
 
@@ -89,35 +115,47 @@ def generate_from_request_data(
 
         node["value"] = request_value
 
-    # Traverse the response data
-    for node in request_tree:
+    return request_data
+
+
+def modify_response(
+    response_data, config_setting, check_value: bool = True, callback_fn=None
+):
+    # Traverse the base response data
+    for node in config_setting:
         res = response_data
 
-        if "value" not in node:
+        if check_value and "value" not in node:
             continue
 
         for key in node["response_keys"]:
             if key in res and isinstance(res[key], Dict):
                 res = res[key]
 
-        res[key] = node["value"]
-
-    # Override response data
-    if response_overrides:
-        for response_override in response_overrides:
-            res = response_data
-
-            for key in response_override["response_keys"]:
-                if key in res and isinstance(res[key], Dict):
-                    res = res[key]
-
-            res[key] = generate_value(key, response_override)
+        res[key] = callback_fn(key, node) if callback_fn else node["value"]
 
     return response_data
 
 
+def get_identifier(data, config):
+    identifier = None
+
+    res = data
+
+    for key in config.get("identifier", []):
+        if key not in res:
+            break
+
+        if isinstance(res[key], Dict):
+            res = res[key]
+        else:
+            identifier = res[key]
+
+    return identifier
+
+
 def validate_request_data(resource: str, request_data: Dict):
-    config_filename = DATA_DIR.joinpath(f"{resource}.config.json")
+    config_filename = CONF_DIR.joinpath(f"{resource}.config.json")
     config = read_json(config_filename)
     request_tree = config["request_tree"]
 
