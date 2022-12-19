@@ -24,12 +24,13 @@ def make_response_from_request_data(
 
     # Handlers
     handlers = {
-        "POST": handle_update,
+        "POST": handle_create,
+        "PATCH": handle_update,
         "GET": handle_get if has_identifier else handle_get_list,
     }
 
     # Get handler
-    handler = handlers.get(method, handle_update)
+    handler = handlers.get(method, handle_create)
 
     return handler(
         resource,
@@ -41,7 +42,7 @@ def make_response_from_request_data(
     )
 
 
-def handle_update(resource, request_data, strategy, config, *args, **kwargs):
+def handle_create(resource, request_data, strategy, config, *args, **kwargs):
     data, identifier = update_resource(resource, request_data, strategy, config)
 
     # Update dependent resources
@@ -54,7 +55,16 @@ def handle_update(resource, request_data, strategy, config, *args, **kwargs):
     return data
 
 
-def handle_get(resource, request_data, strategy, config, identifier, query_args, *args, **kwargs):
+def handle_update(resource, request_data, strategy, config, identifier, **kwargs):
+    data, _ = update_resource(
+        resource, request_data, strategy, config, identifier=identifier
+    )
+    return data
+
+
+def handle_get(
+    resource, request_data, strategy, config, identifier, query_args, *args, **kwargs
+):
     response = read_json(DATA_DIR.joinpath(resource, f"{identifier}.json"))
 
     if query_args:
@@ -62,7 +72,9 @@ def handle_get(resource, request_data, strategy, config, identifier, query_args,
         has_many = config.get("has_many")
 
         if _embed:
-            _embed_list = handle_get_list(has_many, request_data, strategy, config, identifier)
+            _embed_list = handle_get_list(
+                has_many, request_data, strategy, config, identifier
+            )
             response[has_many] = _embed_list
 
     return response
@@ -86,6 +98,7 @@ def update_resource(
     request_data,
     strategy: str = None,
     config: Dict = None,
+    identifier=None,
     parent_identifier=None,
 ):
     if not config:
@@ -104,12 +117,15 @@ def update_resource(
         )
 
     # Load base response data
-    response_data = load_base_response(resource, strategy=strategy)
+    response_data = load_base_response(
+        resource, strategy=strategy, identifier=identifier
+    )
 
     updated_data, identifier = generate_from_request_data(
         request_data=request_data,
         response_data=response_data,
         config=config,
+        should_override=not bool(identifier),
     )
 
     print(f"{resource} identifier: {identifier}")
@@ -135,11 +151,15 @@ def make_response_from_generator(resource, strategy):
     return generate_data(load_base_response(resource, strategy))
 
 
-def load_base_response(resource, strategy: str = None):
+def load_base_response(resource, strategy: str = None, identifier=None):
     filename = (
         f"{resource}.struct.json"
         if strategy == "generate"
         else f"{resource}.response.json"
     )
     filepath = CONF_DIR.joinpath(filename)
+
+    if bool(identifier):
+        filepath = DATA_DIR.joinpath(resource, f"{identifier}.json")
+
     return read_json(filepath)

@@ -76,6 +76,7 @@ def generate_from_request_data(
     request_data: Dict,
     response_data: Dict,
     config: Dict,
+    should_override: bool = True,
 ):
     # Get request tree
     request_tree = config["request_tree"]
@@ -90,7 +91,7 @@ def generate_from_request_data(
 
     # Get response overrides, if any
     response_overrides = config.get("response_overrides", None)
-    if response_overrides:
+    if should_override and response_overrides:
         response_data = modify_response(
             response_data,
             response_overrides,

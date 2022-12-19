@@ -51,7 +51,7 @@ def callback(subpath):
         method=request.method,
         data_format=data_format,
         subpath_mapping=subpath_mapping,
-        query_args=query_args
+        query_args=query_args,
     )
     return response
 
