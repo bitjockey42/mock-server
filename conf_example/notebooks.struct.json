@@ -1,0 +1,14 @@
+{
+    "id": {
+        "required": false,
+        "type": "int",
+        "generator": "numerify",
+        "length": null
+    },
+    "title": {
+        "required": true,
+        "type": "str",
+        "generator": "lexify",
+        "length": 10
+    }
+}

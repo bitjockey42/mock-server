@@ -1,0 +1,14 @@
+{
+    "identifier": ["id"],
+    "request_tree": [
+        {"request_keys": ["title"], "response_keys": ["title"]} 
+    ],
+    "response_overrides": [
+        {
+            "response_keys": ["id"],
+            "generator": "random_number",
+            "type": "int"
+        }
+    ],
+    "has_many": "notes"
+}

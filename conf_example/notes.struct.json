@@ -1,0 +1,38 @@
+{
+    "id": {
+        "required": false,
+        "type": "int",
+        "generator": "numerify",
+        "length": null
+    },
+    "uuid": {
+        "required": false,
+        "type": "str",
+        "generator": "UUID",
+        "length": 36
+    },
+    "title": {
+        "required": false,
+        "type": "str",
+        "generator": "lexify",
+        "length": 7
+    },
+    "text": {
+        "required": true,
+        "type": "str",
+        "generator": "text",
+        "length": 11
+    },
+    "timestamp": {
+        "required": false,
+        "type": "int",
+        "generator": "numerify",
+        "length": null
+    },
+    "notebook": {
+        "required": true,
+        "type": "int",
+        "generator": "numerify",
+        "length": null
+    }
+}
