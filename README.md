@@ -1,12 +1,17 @@
 # mock-server
 
+- [mock-server](#mock-server)
+  - [Configuration](#configuration)
+
+
 ## Configuration
 
-`{resource}.{config_type}.json`
+`{resource}.config.json` main configuration:
 
-
-
-`{resource}.config.json`
+**Available Configuration**
+- `identifier` (optional): 
+- `request_tree`: This represents the mapping between the request data and the responses we return in the server.
+- `response_overrides`: Anything in the response data that should be overriden with a different value.
 
 ```json
 {
@@ -18,11 +23,13 @@
         },
         {
             "request_keys": ["text"],
-            "response_keys": ["text"]
+            "response_keys": ["text"],
+            "required": true
         },
         {
             "request_keys": ["notebook"],
-            "response_keys": ["notebook"]
+            "response_keys": ["notebook"],
+            "required": true
         }
     ],
     "response_overrides": [
@@ -42,6 +49,8 @@
 
 `{resource}.response.json`
 
+The base response used to structure the generated response.
+
 ```json
 {
     "id": 1,
@@ -54,6 +63,8 @@
 ```
 
 `{resource}.struct.json`
+
+The structure of the request.
 
 ```json
 {
