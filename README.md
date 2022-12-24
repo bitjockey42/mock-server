@@ -38,7 +38,16 @@ Create a `CONF_DIR` and place these configuration files within that folder for e
 - `{resource}.response.json`
 - `{resource}.struct.json`
 
-Then see [Configurate](#configurations) for more info on what to put in those files.
+Then see [Configurations](#configurations) for more info on what to put in those files.
+
+You can override the env variables with a `.env` from your working directory.
+
+```env
+BASE_API_PATH=/api/v1
+DEFAULT_DATA_FORMAT=json
+CONF_DIR=conf
+DATA_DIR=data
+```
 
 ### Configurations
 
