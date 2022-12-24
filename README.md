@@ -12,6 +12,8 @@
 
 `mock-server` is a utility to mock server responses.
 
+This is very much in alpha still and a lot of it needs refactoring.
+
 ## Installation
 
 ```shell
