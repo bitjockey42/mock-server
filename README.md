@@ -5,6 +5,7 @@
   - [Installation](#installation)
   - [Developer Installation](#developer-installation)
   - [Configuration](#configuration)
+  - [Usage](#usage)
 
 ## Introduction
 
@@ -25,6 +26,8 @@ poetry install
 ```
 
 ## Configuration
+
+How this works is the mock-server reads from `CONF_DIR/{resource}.{config_type}.json` to generate responses and persists objects as JSON files under a `DATA_DIR` (which can also be overriden as an env var).
 
 - `{resource}.config.json`
 - `{resource}.response.json`
@@ -131,4 +134,16 @@ The structure of the request.
         "length": null
     }
 }
+```
+
+## Usage
+
+```shell
+mock-server app
+```
+
+Override the `DATA_DIR` and `CONF_DIR`:
+
+```shell
+DATA_DIR=../mydata CONF_DIR=../myconf mock-server app
 ```
