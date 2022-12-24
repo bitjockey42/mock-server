@@ -12,7 +12,7 @@
 
 `mock-server` is a utility to mock server responses.
 
-This is very much in alpha still and a lot of it needs refactoring.
+This is very much in alpha still and a lot of it needs refactoring
 
 ## Installation
 
@@ -30,7 +30,7 @@ poetry install
 
 ## Setup and Configuration
 
-How this works is the mock-server reads from `CONF_DIR/{resource}.{config_type}.json` to generate responses and persists objects as JSON files under a `DATA_DIR` (which can also be overriden as an env var). The `resource` corresponds to the plural of a resource. For example, `notes` instead of `note`.
+How this works is the mock-server reads from `CONF_DIR/{resource}.{config_type}.json` to generate responses and persists objects as JSON files under a `DATA_DIR` (which can also be overriden as an env var). The `resource` corresponds to the plural of ad resource. For example, `notes` instead of `note`.
 
 Create a `CONF_DIR` and place these configuration files within that folder for each `resource` you want to mock:
 
