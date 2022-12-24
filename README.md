@@ -4,7 +4,8 @@
   - [Introduction](#introduction)
   - [Installation](#installation)
   - [Developer Installation](#developer-installation)
-  - [Configuration](#configuration)
+  - [Setup and Configuration](#setup-and-configuration)
+    - [Configurations](#configurations)
   - [Usage](#usage)
 
 ## Introduction
@@ -25,13 +26,19 @@ pip install git+https://github.com/bitjockey42/mock-server
 poetry install
 ```
 
-## Configuration
+## Setup and Configuration
 
-How this works is the mock-server reads from `CONF_DIR/{resource}.{config_type}.json` to generate responses and persists objects as JSON files under a `DATA_DIR` (which can also be overriden as an env var).
+How this works is the mock-server reads from `CONF_DIR/{resource}.{config_type}.json` to generate responses and persists objects as JSON files under a `DATA_DIR` (which can also be overriden as an env var). The `resource` corresponds to the plural of a resource. For example, `notes` instead of `note`.
+
+Create a `CONF_DIR` and place these configuration files within that folder for each `resource` you want to mock:
 
 - `{resource}.config.json`
 - `{resource}.response.json`
 - `{resource}.struct.json`
+
+Then see [Configurate](#configurations) for more info on what to put in those files.
+
+### Configurations
 
 `{resource}.config.json`
 
