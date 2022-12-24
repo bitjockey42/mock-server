@@ -1,0 +1,29 @@
+{
+    "identifier": ["id"],
+    "request_tree": [
+        {
+            "request_keys": ["title"],
+            "response_keys": ["title"]
+        },
+        {
+            "request_keys": ["text"],
+            "response_keys": ["text"]
+        },
+        {
+            "request_keys": ["notebook"],
+            "response_keys": ["notebook"]
+        }
+    ],
+    "response_overrides": [
+        {
+            "response_keys": ["id"],
+            "generator": "random_number",
+            "type": "int"
+        },
+        {
+            "response_keys": ["timestamp"],
+            "generator": "unix_time",
+            "type": "int"
+        }
+    ]
+}
