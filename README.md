@@ -17,7 +17,7 @@ This is very much in alpha still and a lot of it needs refactoring
 ## Installation
 
 ```shell
-pip install git+https://github.com/bitjockey42/mock-server
+pip install https://github.com/bitjockey42/mock-server/releases/download/v0.1.0/mock_server-0.1.0-py3-none-any.whl
 ```
 
 ## Developer Installation
