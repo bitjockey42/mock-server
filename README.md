@@ -1,12 +1,38 @@
 # mock-server
 
 - [mock-server](#mock-server)
+  - [Introduction](#introduction)
+  - [Installation](#installation)
+  - [Developer Installation](#developer-installation)
   - [Configuration](#configuration)
 
+## Introduction
+
+`mock-server` is a utility to mock server responses.
+
+## Installation
+
+```shell
+pip install git+https://github.com/bitjockey42/mock-server
+```
+
+## Developer Installation
+
+`poetry` is used to manage dependencies for this project.
+
+```shell
+poetry install
+```
 
 ## Configuration
 
-`{resource}.config.json` main configuration:
+- `{resource}.config.json`
+- `{resource}.response.json`
+- `{resource}.struct.json`
+
+`{resource}.config.json`
+
+The main configuration.
 
 **Available Configuration**
 - `identifier` (optional): 
